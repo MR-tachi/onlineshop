@@ -31,6 +31,7 @@ def home(request):
 def shop(request,filterby="date",filterfield="newest",showcount=12):
     if request.method == 'POST':
         pass
+        
     else:
         categories=Category.objects.all().order_by('name')
         products=Product.objects.annotate(minPrice=Min('variantproduct__mainPrice'))
