@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{%load mathfilters %}
+{% load humanize %} 
+{% block content %}
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>Shopping Cart</h4>
+                    <div class="breadcrumb__links">
+                        <a href={%url 'home'%}>Home</a>
+                        <a href={%url 'shop'%}>Shop</a>
+                        <span>Shopping Cart</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Shopping Cart Section Begin -->
+<section class="shopping-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="shopping__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {%for item in cartitems%}
+                            <tr>
+                                <td class="product__cart__item">
+                                    <div class="product__cart__item__pic">
+                                        <img style="  height: 90px;width: 90px;"src={{item.variantProduct.product.cover.url}} alt="">
+                                    </div>
+                                    <div class="product__cart__item__text">
+                                        <h6>{{item.variantProduct.product.name}}</h6>
+                                        <h6>سایز {{item.variantProduct.size}}</h6>
+                                        <h5>{{item.variantProduct.discountPrice| intcomma}}  T</h5>
+                                    </div>
+                                </td>
+                                <td class="quantity__item">
+                                    <form id="editform" method="POST" action={% url 'edit_cart' %}
+                                            <div class="quantity">
+                                            <div class="pro-qty-2">
+                                                {% csrf_token %}
+                                            <input type="text" name="quantity" id="{{item.id}}" value={{item.quantity}}>
+                                            <input type="hidden" name="newvalue" id="newvalue" value= />
+                                            <input type="hidden" name="editcart" id="editcart" value= />
+                                            <input type="hidden" name="cartid" id="cartid" value={{item.id}} />
+                                            </div>
+                                        </div>
+                                    </form>
+                                </td>
+                                    <td class="cart__price">{{item.quantity| mul:item.variantProduct.discountPrice| intcomma}}</td>
+                                    <td class="cart__close">
+                                        <form method="POST" action={% url 'remove_from_cart' %}>
+                                            {% csrf_token %}
+                                            <input type="hidden" name="remove" id="remove" value={{item.id}} />
+                                            <button style="border-radius: 100%;padding:0;border:0">
+                                                <i class="fa fa-close"></i>
+                                            </button>
+                                        </form>
+                                </td>
+                            </tr>
+                            {%endfor%}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="continue__btn">
+                            <a href={%url 'shop'%}>Continue Shopping</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="continue__btn update__btn">
+                            <form action="">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <!--
+                <div class="cart__discount">
+                    <h6>Discount codes</h6>
+                    <form action="#">
+                        <input type="text" placeholder="Coupon code">
+                        <button type="submit">Apply</button>
+                    </form>
+                </div>
+
+                -->
+                <div class="cart__total">
+                    <h6>Cart total</h6>
+                    <ul>
+                        <li>قیمت <span>{{totalmain|intcomma}} T</span></li>
+                        <li>قیمت با تخفیف <span>{{totaldiscount|intcomma}} T</span></li>
+                    </ul>
+                    <a href={%url 'home'%} class="primary-btn">نهایی کردن سفارش و پرداخت</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Shopping Cart Section End -->
+
+<script>
+
+
+    const inputs = document.querySelectorAll('input[name="quantity"]');
+    for(const input of inputs){
+        input.addEventListener('change', updateValue);
+    } 
+        
+        function updateValue(e) {
+            document.getElementById('cartid').value=`${this.id}`;
+            document.getElementById('newvalue').value=`${this.value}`;
+            document.getElementById('editform').submit();
+        }
+        
+</script>
+{%endblock%}

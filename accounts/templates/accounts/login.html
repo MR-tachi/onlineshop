@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+    <!-- Default form login -->
+    <form class="formColor container w-25 p-3 text-center border border-light p-5 mt-5 rounded" id="form" method="POST"
+          action={% url 'login' %}#form>
+        {% csrf_token %}
+        <p class="h4 mb-4 formTextColor">Login</p>
+        <!-- Username -->
+        <input type="text" name="username" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="Username">
+        <!-- Password -->
+        <input type="password" name="password" id="defaultLoginFormPassword" class="form-control mb-4"
+               placeholder="Password">
+        <!-- Login in button -->
+        <input class="btn btn-info btn-block my-4" type="submit" value="Login"/>
+        {% if error %}
+            <p class="text-danger">   {{ error }}</p>
+        {% endif %}
+        <!-- Register -->
+        <p>Not a member?
+            <a href="{% url 'signup' %}">Register</a>
+        </p>
+    </form>
+    <!-- Default form login -->
+    <br/>
+    <br/>
+
+
+
+{% endblock %}
