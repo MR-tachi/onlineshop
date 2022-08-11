@@ -10,8 +10,8 @@
                 <div class="breadcrumb__text">
                     <h4>Shopping Cart</h4>
                     <div class="breadcrumb__links">
-                        <a href={%url 'home'%}>Home</a>
-                        <a href={%url 'shop'%}>Shop</a>
+                        <a href={%url 'home' %}>Home</a>
+                        <a href={%url 'shop' %}>Shop</a>
                         <span>Shopping Cart</span>
                     </div>
                 </div>
@@ -50,8 +50,8 @@
                                     </div>
                                 </td>
                                 <td class="quantity__item">
-                                    <form id="editform" method="POST" action={% url 'edit_cart' %}
-                                            <div class="quantity">
+                                    <form id="editform" method="POST" action={% url 'edit_cart' %}>
+                                            <div class="">
                                             <div class="pro-qty-2">
                                                 {% csrf_token %}
                                             <input type="text" name="quantity" id="{{item.id}}" value={{item.quantity}}>
