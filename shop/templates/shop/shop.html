@@ -20,6 +20,7 @@
     </section>
     <!-- Breadcrumb Section End -->
 
+
     <!-- Shop Section Begin -->
     <section class="shop spad">
         <div class="container">
@@ -43,7 +44,7 @@
                                             <div class="shop__sidebar__categories">
                                                 <ul class="nice-scroll">
                                                     {%for item in categories%}
-                                                    <li><a href="">{{item.name}}</a></li>
+                                                    <li><a href={%url 'shop' "category" item.name products.paginator.per_page %}>{{item.name}}</a></li>
                                                     {%endfor%}
                                                 </ul>
                                             </div>
@@ -78,12 +79,12 @@
                                         <div class="card-body">
                                             <div class="shop__sidebar__price">
                                                 <ul>
-                                                    <li><a href="#">$0.00 - $50.00</a></li>
-                                                    <li><a href="#">$50.00 - $100.00</a></li>
-                                                    <li><a href="#">$100.00 - $150.00</a></li>
-                                                    <li><a href="#">$150.00 - $200.00</a></li>
-                                                    <li><a href="#">$200.00 - $250.00</a></li>
-                                                    <li><a href="#">250.00+</a></li>
+                                                    <li><a href={%url 'shop' "price" "0,100" products.paginator.per_page %}>0 - 100,000 T</a></li>
+                                                    <li><a href={%url 'shop' "price" "100,200" products.paginator.per_page %}>100,000 - 200,000 T</a></li>
+                                                    <li><a href={%url 'shop' "price" "200,300" products.paginator.per_page %}>200,000 - 300,000 T</a></li>
+                                                    <li><a href={%url 'shop' "price" "300,400" products.paginator.per_page %}>300,000 - 400,000 T</a></li>
+                                                    <li><a href={%url 'shop' "price" "400,500" products.paginator.per_page %}>400,000 - 500,000 T</a></li>
+                                                    <li><a href={%url 'shop' "price" "500,9999999" products.paginator.per_page %}>500,000+ T</a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -96,30 +97,14 @@
                                     <div id="collapseFour" class="collapse show" data-parent="#accordionExample">
                                         <div class="card-body">
                                             <div class="shop__sidebar__size">
-                                                <label for="xs">xs
-                                                    <input type="radio" id="xs">
+                                                {%for item in sizes%}
+                                                <label for="{{item.size}}">
+                                                    <a href={%url 'shop' "size" item.size products.paginator.per_page %}>
+                                                        {{item.size}}
+                                                    </a>
+                                                    <input type="radio" id="{{item.size}}">
                                                 </label>
-                                                <label for="sm">s
-                                                    <input type="radio" id="sm">
-                                                </label>
-                                                <label for="md">m
-                                                    <input type="radio" id="md">
-                                                </label>
-                                                <label for="xl">xl
-                                                    <input type="radio" id="xl">
-                                                </label>
-                                                <label for="2xl">2xl
-                                                    <input type="radio" id="2xl">
-                                                </label>
-                                                <label for="xxl">xxl
-                                                    <input type="radio" id="xxl">
-                                                </label>
-                                                <label for="3xl">3xl
-                                                    <input type="radio" id="3xl">
-                                                </label>
-                                                <label for="4xl">4xl
-                                                    <input type="radio" id="4xl">
-                                                </label>
+                                                {%endfor%}
                                             </div>
                                         </div>
                                     </div>
@@ -257,12 +242,50 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="product__pagination">
-                                <a class="active" href="#">1</a>
+                                {% for num in products.paginator.page_range %}
+                                {% if products.number == num %}
+                                <a class="active" href="?page={{ num }}">{{num}}</a>
+                                {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
+                                <a  href="?page={{ num }}">{{ num }}</a>
+                                {% endif %}
+                                {% endfor %}
+                                
+                                <!--
                                 <a href="#">2</a>
                                 <a href="#">3</a>
                                 <span>...</span>
                                 <a href="#">21</a>
-                            </div>
+                                <ul class="pagination">
+                                    <li class="page-item">
+                                        {% if movies.has_previous %}
+                                        <a class="page-link" href="?page={{ movies.previous_page_number }}"
+                                        aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    {% endif %}
+                                </li>
+                                
+                                {% for num in movies.paginator.page_range %}
+                                {% if movies.number == num %}
+                                <li class="page-item"><a class="page-link" href="?page={{ num }}">
+                                    <strong>{{ num }}</strong></a></li>
+                                    {% elif num > movies.number|add:'-3' and num < movies.number|add:'3' %}
+                                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                                    {% endif %}
+                                    {% endfor %}
+                                    
+                                    <li class="page-item">
+                                        {% if movies.has_next %}
+                                        <a class="page-link" href="?page={{ movies.next_page_number }}" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                        {% endif %}
+                                    </li>
+                                </ul>
+                                -->
+            </div>
                         </div>
                     </div>
                 </div>

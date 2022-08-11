@@ -1,3 +1,5 @@
+from argparse import _MutuallyExclusiveGroup
+from asyncio.windows_events import NULL
 from email.policy import default
 from itertools import product
 from pickle import TRUE
@@ -17,14 +19,16 @@ from django.contrib import admin
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,null=True,blank=True)
     nationaID = models.CharField(max_length=10,null=True, blank=True)
-    telephone = models.CharField(max_length=11,null=True, blank=True)
+    phone = models.CharField(max_length=11,null=True, blank=True)
+    mobilephone = models.CharField(max_length=11,null=True, blank=True)
+    city = models.CharField(max_length=30,null=True, blank=True)
     address = models.TextField(max_length=300,null=True, blank=True)
     birthDate = models.DateField(null=True, blank=True)
     postalCode = models.CharField(max_length=10, null=True, blank=True)
     cardNumber = models.CharField(max_length=24, blank=True, null=True)
     createDate = models.DateTimeField(null=True, blank=True)
     def __str__(self) :
-        return self.user.username + "'s profile"
+        return self.user.username
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -38,7 +42,7 @@ def save_user_profile(sender, instance, **kwargs):
 
 
 class ShopCart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     createDate = models.DateField(null=True)
     def __str__(self):
         return self.user.username +"'s Shopcart"
@@ -97,22 +101,26 @@ class VariantProduct(models.Model):
     
 class CartItem(models.Model):
     shopCart = models.ForeignKey(ShopCart, on_delete=models.CASCADE)
-    variantProduct = models.ForeignKey(VariantProduct,on_delete=models.CASCADE,null=TRUE,blank=True)
-    quantity=models.IntegerField(default=0,blank='true',null='true')
+    variantProduct = models.ForeignKey(VariantProduct,on_delete=models.CASCADE,null=True,blank=True)
+    quantity=models.IntegerField(default=0,blank=True,null=True)
     createDate = models.DateField(null=True)
     def __str__(self):
         return  f'{self.shopCart}'+' cart item'
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    total = models.IntegerField()
     createDate = models.DateField()
+    informations=models.TextField(null=True)
+    note=models.TextField(null=True,blank=True)
 
+
+statuschoices=(('d','delivered'),('o','onway'),('r','refunded'))
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    product = models.OneToOneField(Product, on_delete=models.CASCADE)
-    createDate = models.DateField()
+    variantProduct = models.ForeignKey(VariantProduct,null=True ,on_delete=models.CASCADE)
+    price = models.IntegerField(null=True,blank=True)
+    status=models.CharField(choices=statuschoices,max_length=10,default='o')
 
 
 class PaymentDetails(models.Model):

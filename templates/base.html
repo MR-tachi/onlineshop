@@ -76,15 +76,22 @@
             </div>
             <div class="col-lg-6 col-md-5">
               <div class="header__top__right">
+                {%if user.is_authenticated %}
+                <div class="header__top__links">
+                      <a href="">Welcome {{user}}</a>
+                      <a href={%url 'profile' %}>Profile</a>
+                </div>
+                <div class="header__top__links">
+                  <a href={%url 'logout' %}>•Log out </a>
+                </div>
+                {%else%}
                 <div class="header__top__links">
                   <a href={% url 'signup' %}>Sign up</a>
                 </div>
-                <div class="header__top__links">
+              <div class="header__top__links">
                   <a href={% url 'login' %}>Log in</a>
                 </div>
-                <div class="header__top__links">
-                  <a href={% url 'signup' %}>Welcome {{user}}</a>
-                </div>
+                {%endif%}
               </div>
             </div>
           </div>
@@ -122,7 +129,6 @@
               <a href="#" class="search-switch"><img src="{% static '/img/icon/search.png' %}" alt=""/></a>
               <a href="#"><img src="{% static '/img/icon/heart.png' %}" alt="" /></a>
               <a href={% url 'shoppingcart' %}><img src="{% static '/img/icon/cart.png' %}" alt="" /> <span></span></a>
-              <div class="price">$0.00</div>
             </div>
           </div>
         </div>
@@ -131,6 +137,8 @@
     </header>
     <!-- Header Section End -->
 
+    
+    
     {% block content %} {% endblock %}
 
     <!-- Footer Section Begin -->
@@ -219,5 +227,12 @@
     <script src="{% static '/js/mixitup.min.js' %}"></script>
     <script src="{% static '/js/owl.carousel.min.js' %}"></script>
     <script src="{% static '/js/main.js' %}"></script>
+    <script>
+      setTimeout(function(){
+        if ($('#msg').length > 0) {
+          $('#msg').remove();
+        }
+      }, 2000)
+    </script> 
   </body>
 </html>

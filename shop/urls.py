@@ -8,5 +8,6 @@ urlpatterns = [
     path('shop', views.shop, name='shop'),
     path('remove_from_cart',views.remove_from_cart,name='remove_from_cart'),
     path('edit_cart',views.edit_cart,name='edit_cart'),
+    path('order',views.order,name='order'),
     path('?filter_by=<str:filterby>&filter_field=<str:filterfield>&show=<int:showcount>',views.shop,name='shop')
 ]
