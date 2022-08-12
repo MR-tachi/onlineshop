@@ -34,7 +34,6 @@ ALLOWED_HOSTS = ['mreza.pythonanywhere.com']
 
 INSTALLED_APPS = [
     'django.utils.encoding',
-    'mathfilters',
     'accounts.apps.AccountsConfig',
     'shop.apps.ShopConfig',
     'django.contrib.admin',
@@ -44,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'mathfilters',
+
 
 
 ]
