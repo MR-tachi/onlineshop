@@ -40,46 +40,46 @@
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
                                         <p>نام<span>*</span></p>
-                                            <input type="text" name="fname">
+                                            <input type="text" name="fname" value="{{user.first_name}}">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
                                         <p>نام خانوادگی<span>*</span></p>
-                                            <input type="text" name="lname">
+                                            <input type="text" name="lname" value="{{user.last_name}}">
                                     </div>
                                 </div>
                             </div>
                             <div class="checkout__input">
                                 <p>استان ، شهر ، شهرستان<span>*</span></p>
-                                <input name="city" type="text">
+                                <input name="city" type="text" value="{{user.profile.city}}">
                             </div>
                             <div class="checkout__input">
                                 <p>آدرس<span>*</span></p>
-                                <input name="address" type="text" placeholder="Street Address" class="checkout__input__add">
+                                <input name="address" type="text" class="checkout__input__add" value="{{user.profile.address}}">
                             </div>
                             <div class="checkout__input">
                                 <p>کد پستی<span>*</span></p>
-                                <input name="postalcode" type="text">
+                                <input name="postalcode" type="text" value="{{user.profile.postalCode}}">
                             </div>
 
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
                                         <p> شماره تلفن ثابت<span>*</span></p>
-                                        <input name="phone" type="text">
+                                        <input name="phone" type="text"value="{{user.profile.phone}}">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
                                         <p>شماره تلفن همراه<span>*</span></p>
-                                        <input name="mobilephone" type="text">
+                                        <input name="mobilephone" type="text" value="{{user.profile.mobilePhone}}">
                                     </div>
                                 </div>
                             </div>
                             <div class="checkout__input">
                                 <p>ایمیل<span>*</span></p>
-                                <input name="email" type="text">
+                                <input name="email" type="text"value="{{user.email}}">
                             </div>
 
                             <div class="checkout__input__checkbox">

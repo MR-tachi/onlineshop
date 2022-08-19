@@ -95,9 +95,9 @@
                         <p>{{product.desciption}}</p>
                     <form method="POST" action={% url 'add_to_cart' %}>
                         {% csrf_token %}
-                        <div class="product__details__option">
+                        <div class="product__details__option" style="direction: rtl;">
                             <div class="product__details__option__size">
-                                <span>Size:</span>
+                                <span>سایز :</span>
 
                                 {%for item in variant%}
                                 <label for="{{item.size}}">{{item.size}}
@@ -106,13 +106,13 @@
                                 {%endfor%}
                             </div>
                         </div>
-                        <div class="product__details__cart__option">
+                        <div class="product__details__cart__option" ">
                             <div class="quantity">
                                 <div class="pro-qty">
                                     <input type="text" name="quantityvalue" value="1">
                                 </div>
                             </div>
-                            <button id="addbutton" disabled="" class="primary-btn btn-outline-dark">Add to cart</button>
+                            <button id="addbutton" disabled="" class="primary-btn btn-outline-dark">اضافه به سبد</button>
                         </div>
                         <input type="hidden" name="radioid" id="idvalue" value="" />
                         <input type="hidden" name="radiosize" id="radiovalue" value="" />

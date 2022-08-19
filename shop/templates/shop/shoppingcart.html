@@ -22,7 +22,7 @@
 <!-- Breadcrumb Section End -->
 
 <!-- Shopping Cart Section Begin -->
-<section class="shopping-cart spad">
+<section class="shopping-cart spad" style="direction:rtl;text-align: right;">
     <div class="container">
         <div class="row">
             <div class="col-lg-8">
@@ -30,40 +30,50 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Product</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
+                                <th>تصویر</th>
+                                <th>محصول</th>
+                                <th>تعداد</th>
+                                <th>مجموع</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             {%for item in cartitems%}
                             <tr>
-                                <td class="product__cart__item">
-                                    <div class="product__cart__item__pic">
-                                        <img style="  height: 90px;width: 90px;"src={{item.variantProduct.product.cover.url}} alt="">
+                                <td calss="product__cart__item" style="padding-left: 50px;" >
+                                    <div class="product__cart__item__pic" style="  height: 90px;width: 90px;">
+                                        <img src={{item.variantProduct.product.cover.url}} alt="">
                                     </div>
+                                </td>
+                                <td class="product__cart__item">
+
                                     <div class="product__cart__item__text">
                                         <h6>{{item.variantProduct.product.name}}</h6>
-                                        <h6>سایز {{item.variantProduct.size}}</h6>
-                                        <h5>{{item.variantProduct.discountPrice| intcomma}}  T</h5>
+                                        <h5 style="pad">سایز {{item.variantProduct.size}}</h5>
+                                        <h5 style="direction:ltr">
+                                            {{item.variantProduct.discountPrice| intcomma}}  T
+                                            <span style="color:#ff0000;text-decoration-line:line-through;">
+                                                {{item.variantProduct.mainPrice| intcomma}} T
+                                            </span>
+                                        </h5>
                                     </div>
                                 </td>
                                 <td class="quantity__item">
-                                    <form id="editform" method="POST" action={% url 'edit_cart' %}>
-                                            <div class="">
+                                    <form id="editform" method="POST" action="{% url 'edit_cart' %}">
+                                
                                             <div class="pro-qty-2">
+                                                <input type="text" name="quantity" id="{{item.id}}" value="{{item.quantity}}" style="border: white;width: 26px;text-align: center;">
                                                 {% csrf_token %}
-                                            <input type="text" name="quantity" id="{{item.id}}" value={{item.quantity}}>
-                                            <input type="hidden" name="newvalue" id="newvalue" value= />
-                                            <input type="hidden" name="editcart" id="editcart" value= />
-                                            <input type="hidden" name="cartid" id="cartid" value={{item.id}} />
+                                                <input type="hidden" name="newvalue" id="newvalue" value= />
+                                                <input type="hidden" name="editcart" id="editcart" value= />
+                                                <input type="hidden" name="cartid" id="cartid" value="{{item.id}}" />
                                             </div>
-                                        </div>
                                     </form>
                                 </td>
-                                    <td class="cart__price">{{item.quantity| mul:item.variantProduct.discountPrice| intcomma}}</td>
-                                    <td class="cart__close">
+                                <td class="cart__price" style="direction:ltr;">
+                                    {{item.quantity| mul:item.variantProduct.discountPrice| intcomma}} T
+                                </td>
+                                <td class="cart__close">
                                         <form method="POST" action={% url 'remove_from_cart' %}>
                                             {% csrf_token %}
                                             <input type="hidden" name="remove" id="remove" value={{item.id}} />
@@ -80,7 +90,7 @@
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="continue__btn">
-                            <a href={%url 'shop'%}>Continue Shopping</a>
+                            <a href={%url 'shop'%}>ادامه خرید</a>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6">
@@ -103,10 +113,10 @@
 
                 -->
                 <div class="cart__total">
-                    <h6>Cart total</h6>
+                    <h6> <strong>مجموع سبد خرید</strong></h6>
                     <ul>
-                        <li>قیمت <span>{{totalmain|intcomma}} T</span></li>
-                        <li>قیمت با تخفیف <span>{{totaldiscount|intcomma}} T</span></li>
+                        <li style="direction: ltr;">قیمت <span>{{totalmain|intcomma}} T</span></li>
+                        <li style="direction: ltr;">قیمت با احتساب تخفیف <span>{{totaldiscount|intcomma}} T</span></li>
                     </ul>
                     <a href={%url 'order'%} class="primary-btn">نهایی کردن سفارش و پرداخت</a>
                 </div>

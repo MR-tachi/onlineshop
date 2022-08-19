@@ -137,8 +137,8 @@ def shoppingcart(request):
 
 
 def order(request):
-    try:
-        if(request.POST):
+    if(request.POST):
+        try:
             #print('\033[91m' +"print:  "+ str(request.POST) + '\033[0m')
             print('\033[91m' + "print:  " +
                   str(request.user.first_name) + '\033[0m')
@@ -161,8 +161,8 @@ def order(request):
                 OrderItem.objects.create(order=order, variantProduct=cartitem.variantProduct,
                                          price=cartitem.variantProduct.discountPrice, status='o')
                 CartItem.objects.get(id=cartitem.id).delete()
-    except:
-        pass
+        except:
+            pass
 
         return redirect('shoppingcart')
     else:
@@ -175,17 +175,5 @@ def order(request):
             totaldiscount = totaldiscount + \
                 (item.variantProduct.discountPrice*item.quantity)
         context = {'cartitems': cartitems, 'totalmain': totalmain,
-                   'totaldiscount': totaldiscount}
+                   'totaldiscount': totaldiscount }
         return render(request, 'shop/order.html', context)
-
-    """
-    if request.method == 'POST':
-        pass
-        # Movie.objects.filter(title__contains=request.POST['search']).order_by('add_date').reverse()
-    else:
-        products=Product.objects.annotate(minPrice=Min('variantproduct__mainPrice'))
-        #products = Product.objects.annotate(minPrice=Subquery(VariantProduct.objects.filter(
-        #    product=OuterRef("pk")).order_by("mainPrice").values("mainPrice")[:1]))
-        context={'products': products}
-        return render(request, 'shop/home.html',context )
-    """

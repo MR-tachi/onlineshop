@@ -13,7 +13,7 @@ class Profile(models.Model):
         User, on_delete=models.CASCADE, null=True, blank=True)
     nationaID = models.CharField(max_length=10, null=True, blank=True)
     phone = models.CharField(max_length=11, null=True, blank=True)
-    mobilephone = models.CharField(max_length=11, null=True, blank=True)
+    mobilePhone = models.CharField(max_length=11, null=True, blank=True)
     city = models.CharField(max_length=30, null=True, blank=True)
     address = models.TextField(max_length=300, null=True, blank=True)
     birthDate = models.DateField(null=True, blank=True)
@@ -66,7 +66,7 @@ class Product(models.Model):
         return self.name
 
     def photo(self):
-        return mark_safe('<img src="/mdeia/%s" width="90" height="90" />' % self.cover)
+        return mark_safe('<img src="/media/%s" width="90" height="90" />' % self.cover)
 
 
 class Review(models.Model):
@@ -88,10 +88,10 @@ class Gallery(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.product.name + "'s image"
+        return self.product.name
 
     def photo(self):
-        return mark_safe('<img src="/image%s" width="90" height="90" />' % self.image)
+        return mark_safe('<img src="/media/%s" width="90" height="90" />' % self.image)
 
 
 class VariantProduct(models.Model):

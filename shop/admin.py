@@ -16,7 +16,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class GalleryAdmin(admin.ModelAdmin):
-    list_display = ('photo')
+    list_display = ['photo','__str__']
 
 
 admin.site.register(Profile)
@@ -25,7 +25,7 @@ admin.site.register(Review)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(VariantProduct)
-admin.site.register(Gallery)
+admin.site.register(Gallery,GalleryAdmin)
 admin.site.register(Order)
 admin.site.register(OrderItem)
 admin.site.register(PaymentDetails)

@@ -9,6 +9,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{% static '/favicon-16x16.png' %}">
     <link rel="manifest" href="{% static '/site.webmanifest' %}">
     <link rel="mask-icon" href="{% static '/safari-pinned-tab.svg' %}">
+    <link rel="stylesheet" href="{% static  '/css/fonts.css' %}">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
     
@@ -31,9 +32,11 @@
       <link rel="stylesheet" href="{% static '/css/slicknav.min.css' %}" type="text/css" />
       <link rel="stylesheet" href="{% static '/css/style.css' %}" type="text/css" />
 
+      
+
   </head>
   
-  <body>
+  <body class>
     <!-- Page Preloder -->
     <div id="preloder">
       <div class="loader"></div>
@@ -51,10 +54,10 @@
         </div>
       </div>
       <div class="offcanvas__nav__option">
-        <a href="#" class="search-switch">
-          <img src="{%static 'img/icon/search.png' %}" alt=""/>
-        </a>
-        <a href="#"><img src="{% static 'img/icon/heart.png' %}" alt="" /></a>
+        <!--
+          <a href="#" class="search-switch"><img src="{%static 'img/icon/search.png' %}" alt=""/></a>
+          <a href="#"><img src="{% static 'img/icon/heart.png' %}" alt="" /></a>
+        -->
         <a href={% url 'shoppingcart' %}><img src="{% static 'img/icon/cart.png' %}" alt="" /> <span>0</span></a>
       </div>
       <div id="mobile-menu-wrap"></div>
@@ -78,11 +81,10 @@
               <div style="direction:ltr;text-align:left;" class="header__top__right">
                 {%if user.is_authenticated %}
                 <div class="header__top__links">
-                      <a href="">Welcome {{user}}</a>
-                      <a href={%url 'profile' %}>پروفایل</a>
+                  <a href={%url 'logout' %}>خروج</a>
                 </div>
                 <div class="header__top__links">
-                  <a href={%url 'logout' %}>•خروج </a>
+                      <a  style="direction: rtl;" href={%url 'profile' %}>پروفایل {{user.first_name}}</a>
                 </div>
                 {%else%}
                 <div class="header__top__links">
@@ -126,10 +128,9 @@
           </div>
           <div class="col-lg-3 col-md-3" >
             <div class="header__nav__option" style="direction:ltr;text-align:left;">
-              <a href="#" class="search-switch"><img src="{% static '/img/icon/search.png' %}" alt=""/></a>
-               <a href="#"><img src="{% static '/img/icon/heart.png' %}" alt="" /></a>
               <!--
-
+              <a href="#" class="search-switch"><img src="{% static '/img/icon/search.png' %}" alt=""/></a>
+              <a href="#"><img src="{% static '/img/icon/heart.png' %}" alt="" /></a>
               -->
               <a href={% url 'shoppingcart' %}><img src="{% static '/img/icon/cart.png' %}" alt="" /> <span></span></a>
             </div>
