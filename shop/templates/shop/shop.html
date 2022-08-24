@@ -99,7 +99,7 @@
                                             <div class="shop__sidebar__size">
                                                 {%for item in sizes%}
                                                 <label for="{{item.size}}">
-                                                    <a href={%url 'shop' "size" item.size products.paginator.per_page %}>
+                                                    <a href={%url 'shop' "size" item.size products.paginator.per_page %} >
                                                         {{item.size}}
                                                     </a>
                                                     <input type="radio" id="{{item.size}}">

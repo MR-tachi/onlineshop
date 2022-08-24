@@ -1,6 +1,7 @@
+from django.db.models import Avg , Count
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save , post_delete
 from django.dispatch import receiver
 from django.utils.html import mark_safe
 
@@ -57,8 +58,8 @@ class Product(models.Model):
     category = models.ManyToManyField(Category)
     dkp = models.CharField(unique=True, max_length=12, null=True, blank=True)
     createDate = models.DateField(null=True)
-    averageRating = models.IntegerField(null=True, blank=True)
-    ratingCount = models.IntegerField(null=True, blank=True)
+    averageRating = models.FloatField(null=True, blank=True , default=0.0)
+    ratingCount = models.IntegerField(null=True, blank=True , default=0)
     cover = models.ImageField(
         upload_to='images/', default=None, blank=True, null=True)
 
@@ -80,6 +81,33 @@ class Review(models.Model):
 
     def __str__(self):
         return f'comment {self.user} on {self.product}'
+
+
+
+@receiver(post_save, sender=Review)
+def update_product_review(sender, instance, created, **kwargs):
+    if created:
+        pObject=Product.objects.get(pk=instance.product.id)
+        try:
+            #pObject.averageRating=((pObject.averageRating*pObject.ratingCount)+instance.rate)/(pObject.ratingCount+1)
+            pObject.averageRating=Review.objects.filter(product=instance.product.id).aggregate(Avg('rate'))['rate__avg']
+            pObject.ratingCount=Review.objects.filter(product=instance.product.id).aggregate(Count('rate'))['rate__count']
+        except TypeError:
+            pObject.averageRating=instance.rate
+            pObject.ratingCount=1
+        pObject.save()
+
+@receiver(post_delete, sender=Review)
+def update_product_review(sender, instance, **kwargs):
+    pObject=Product.objects.get(pk=instance.product.id)
+    try:
+        #pObject.averageRating=((pObject.averageRating*pObject.ratingCount)+instance.rate)/(pObject.ratingCount+1)
+        pObject.averageRating=Review.objects.filter(product=instance.product.id).aggregate(Avg('rate'))['rate__avg']
+        pObject.ratingCount=Review.objects.filter(product=instance.product.id).aggregate(Count('rate'))['rate__count']
+    except :
+        pObject.averageRating=0.0
+        pObject.ratingCount=0
+    pObject.save()
 
 
 class Gallery(models.Model):

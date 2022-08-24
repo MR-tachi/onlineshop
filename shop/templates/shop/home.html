@@ -62,7 +62,7 @@
                             <img src="{% static 'img/banner/banner-1.jpg'%}" alt="">
                         </div>
                         <div class="banner__item__text">
-                            <h2>کالکشن دمپایی</h2>
+                            <h2>مجموعه دمپایی</h2>
                             <a href="{%url 'shop'%}">خرید</a>
                         </div>
                     </div>
@@ -96,7 +96,7 @@
 
 
     <!-- Product Section Begin -->
-    <section class="product spad"style="direction:rtl;text-align:right;" >
+    <section class="product spad"style="direction:ltr;text-align:right;" >
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -107,7 +107,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="row product__filter">
+            <div class="row product__filter" style="text-align: center;">
                 {% for item in products %}
                 <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
                     <div class="product__item">
@@ -125,13 +125,15 @@
                         </a>
                             <div class="product__item__text">
                                 <h6>{{item.name}}</h6>
-
+                            
                             <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
+                                {% for i in '12345'|make_list %}
+                                {%if forloop.counter > item.averageRating %}
                                 <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
+                                {%else%}
+                                <i class="fa fa-star"></i>
+                                {%endif%}
+                                {%endfor%}
                             </div>
                             <h5>{{item.minPrice| intcomma}} T</h5>
                             <!--

@@ -77,12 +77,15 @@
                     <div class="product__details__text">
                         <h4>{{product.name}}</h4>
                         <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star-o"></i>
-                            <span> - {{product.averageRating}} Reviews</span>
+                            {% for i in '12345'|make_list %}
+                                {%if forloop.counter > product.averageRating %}
+                                <i class="fa fa-star-o"></i>
+                                {%else%}
+                                <i class="fa fa-star"></i>
+                                {%endif%}
+                                {%endfor%}
+                                <a>  ({{product.averageRating|floatformat:}})</a>
+                            <span style="direction: rtl;" >  {{product.ratingCount}} نظر -  </span>
                         </div>
                         <h3 style="margin-bottom: 0px;">
                             {{variant.0.discountPrice| intcomma}} T <span>{{variant.0.mainPrice| intcomma}} T</span>
@@ -106,7 +109,7 @@
                                 {%endfor%}
                             </div>
                         </div>
-                        <div class="product__details__cart__option" ">
+                        <div class="product__details__cart__option" style="direction: rtl;">
                             <div class="quantity">
                                 <div class="pro-qty">
                                     <input type="text" name="quantityvalue" value="1">
@@ -126,8 +129,7 @@
                                     <span>Categories:</span>
                                     |
                                     {%for item in product.category.all%}
-                                    <a href="#">
-                                        {{item}} 
+                                    <a href="{%url 'shop' "category" item.name 3 %}">{{item.name}}
                                     </a>
                                     | 
                                     {%endfor%}

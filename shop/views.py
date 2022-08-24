@@ -1,7 +1,5 @@
 from datetime import datetime
 from multiprocessing import context
-from re import A
-import re
 from django.shortcuts import render, get_object_or_404, redirect
 from shop.models import *
 from django.db.models import Min
