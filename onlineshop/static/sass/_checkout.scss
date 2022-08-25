@@ -39,6 +39,37 @@
     }
   }
 
+  
+
+  input {
+    height: 50px;
+    width: 100%;
+    border: 1px solid #e1e1e1;
+    font-size: 14px;
+    color: #b7b7b7;
+    padding-left: 20px;
+    margin-bottom: 20px;
+
+    &::placeholder {
+      color: #b7b7b7;
+    }
+  }
+}
+
+.profile__input {
+  margin-bottom: 6px;
+  
+  p {
+    color: $heading-color;
+    margin-bottom: 12px;
+
+    span {
+      color: #e53637;
+    }
+  }
+
+  
+
   input {
     height: 50px;
     width: 100%;

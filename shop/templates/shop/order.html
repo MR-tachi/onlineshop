@@ -26,8 +26,9 @@
     <!-- Breadcrumb Section End -->
 
     <!-- Checkout Section Begin -->
+
     <section class="checkout spad">
-        <div class="container">
+        <div class="container" style="direction: rtl;text-align: right;">
             <div class="checkout__form">
                 <form id="order" method="POST" action={% url 'order' %}>
                     {%csrf_token%}
@@ -82,12 +83,13 @@
                                 <input name="email" type="text"value="{{user.email}}">
                             </div>
 
+                            <input type="hidden" id="update" name="update" value="off">
                             <div class="checkout__input__checkbox">
                                 <label for="acc">
                                     ذخیره اطلاعات فعلی در پروفایل؟
-                                    <input name="update" type="checkbox" id="acc">
-                                    <span name"update2" class="checkmark"></span>
-                                    <p>با فعال کردن این تیک ، اطلاعات فعلی در پروفایل شما جایگزین خواهد شد</p>
+                                    <input type="checkbox" id="acc" onclick="myFunction()">
+                                    <span class="checkmark"></span>
+                                    <p style="text-align: right;">با فعال کردن این تیک ، اطلاعات فعلی در پروفایل شما جایگزین خواهد شد</p>
                                 </label>
                             </div>
                             <div class="checkout__input">
@@ -96,20 +98,20 @@
                                 placeholder="توضیحات اضافه در مورد سفارشات (به خصوص در مورد تحویل)">
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-6">
+                        <div class="col-lg-4 col-md-6" style="text-align: right;direction: ltr;">
                             <div class="checkout__order">
                                 <h4 class="order__title">سفارشات شما</h4>
                                 <div class="checkout__order__products"> محصول <span>مجموع</span></div>
                                 <ul class="checkout__total__products">
                                 {%for item in cartitems%}
-                                    <li>{{ forloop.counter }}. {{item.variantProduct}} <i>x{{item.quantity}}</i> <span>{{item.variantProduct.mainPrice| mul:item.quantity |intcomma}}</span></li>
+                                    <li style="direction: rtl;">{{ forloop.counter }}. {{item.variantProduct}} <i>{{item.quantity}}x</i> <span> {{item.variantProduct.mainPrice| mul:item.quantity |intcomma}}T</span></li>
                                 {%endfor%}
                                 </ul>
                                 <ul class="checkout__total__all">
-                                    <li>قیمت <span>{{totalmain|intcomma}} T</span></li>
-                                    <li>تخفیف <span>{{totalmain| sub:totaldiscount|intcomma}} T</span></li>
+                                    <li>قیمت <span>{{totalmain|intcomma}}T</span></li>
+                                    <li>تخفیف <span>{{totalmain| sub:totaldiscount|intcomma}}T</span></li>
                                     <hr>
-                                    <li>مبلغ نهایی <span>{{totaldiscount|intcomma}} T</span></li>
+                                    <li>مبلغ نهایی <span>{{totaldiscount|intcomma}}T</span></li>
                                 </ul>
                                 <button type="submit" class="site-btn">پرداخت</button>
                             </div>
@@ -121,4 +123,15 @@
     </section>
     <!-- Checkout Section End -->
 
+
+<script>
+    function myFunction() {
+    var checkBox = document.getElementById("acc");
+    if (checkBox.checked == true){
+        document.querySelector('#update').value = "on";
+    }
+    else document.querySelector('#update').value = "off";
+}
+        
+</script>
     {%endblock%}

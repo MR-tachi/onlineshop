@@ -48,17 +48,16 @@ def logout(request):
 
 def profile(request, edit=""):
     if request.method == 'POST':
-        address = request.POST['city']+'  '+request.POST['address']
         User.objects.filter(username=request.user).update(
             first_name=request.POST['fname'], last_name=request.POST['lname'], email=request.POST['email'])
-        Profile.objects.filter(user=request.user).update(mobilephone=request.POST['mobilephone'],
-                                                         address=address, postalCode=request.POST['postalcode'], phone=request.POST['phone'])
+        Profile.objects.filter(user=request.user).update(mobilePhone=request.POST['mobilephone'],
+                                                         address=request.POST['address'], postalCode=request.POST['postalcode'],
+                                                         phone=request.POST['phone'],city=request.POST['city'])
         return redirect('profile')
     else:
         if(edit == "edit"):
-            editable = ""
+            editable = "style=color:black"
         else:
-            editable = "readonly"
-        information = ''
-        context = {'editable': editable, 'information': information}
+            editable = "readonly=true"
+        context = {'editable': editable}
     return render(request, 'accounts/profile.html', context)

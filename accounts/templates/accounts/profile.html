@@ -27,7 +27,7 @@
     <!-- Checkout Section Begin -->
     <section class="checkout spad">
         <div class="container">
-            <div class="checkout__form">
+            <div class="checkout__form" style="direction: rtl;text-align: right;">
                 
                 <div class="row">
                     <div class="col-lg-8 col-md-6">
@@ -41,48 +41,48 @@
                             <h6 class="checkout__title">اطلاعات ثبت شده شما:</h6>
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <div class="checkout__input">
+                                    <div class="profile__input">
                                         <p>نام<span></span></p>
-                                            <input {{editable}} value="{{user.fname}}" type="text" name="fname">
+                                            <input {{editable}} value="{{user.first_name}}" type="text" name="fname">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <div class="checkout__input">
+                                    <div class="profile__input">
                                         <p>نام خانوادگی<span></span></p>
-                                            <input {{editable}} value="{{user.lname}}" type="text" name="lname">
+                                            <input {{editable}} value="{{user.last_name}}" type="text" name="lname">
                                     </div>
                                 </div>
                             </div>
-                            <div class="checkout__input">
+                            <div class="profile__input">
                                 <p>استان ، شهر ، شهرستان<span>*</span></p>
-                                <input {{editable}} value="{{inf.city}}" name="city" type="text">
+                                <input {{editable}} value="{{user.profile.city}}" name="city" type="text">
                             </div>
-                            <div class="checkout__input">
+                            <div class="profile__input">
                                 <p>آدرس<span>*</span></p>
-                                <input {{editable}} value="{{inf.address}}" name="address" type="text" placeholder="Street Address" class="checkout__input__add">
+                                <input {{editable}} value="{{user.profile.address}}" name="address" type="text" placeholder="Street Address" class="profile__input__add">
                             </div>
-                            <div class="checkout__input">
+                            <div class="profile__input">
                                 <p>کد پستی<span>*</span></p>
-                                <input {{editable}} value="{{inf.postalcode}}" name="postalcode" type="text">
+                                <input {{editable}} value="{{user.profile.postalCode}}" name="postalcode" type="text">
                             </div>
 
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <div class="checkout__input">
+                                    <div class="profile__input">
                                         <p> شماره تلفن ثابت<span>*</span></p>
-                                        <input {{editable}}  value="{{inf.phone}}" name="phone" type="text">
+                                        <input {{editable}}  value="{{user.profile.phone}}" name="phone" type="text">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <div class="checkout__input">
+                                    <div class="profile__input">
                                         <p>شماره تلفن همراه<span>*</span></p>
-                                        <input {{editable}} value="{{inf.mobilephone}}" name="mobilephone" type="text">
+                                        <input {{editable}} value="{{user.profile.mobilePhone}}" name="mobilephone" type="text">
                                     </div>
                                 </div>
                             </div>
-                            <div class="checkout__input">
+                            <div class="profile__input">
                                 <p>ایمیل<span>*</span></p>
-                                <input {{editable}} value="{{inf.email}}" name="email" type="text">
+                                <input {{editable}} value="{{user.email}}" name="email" type="text">
                             </div>
 
                             <button type="submit" class="site-btn">ثبت</button>
