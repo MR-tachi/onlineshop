@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load humanize %} 
+{%load mathfilters %}
+{% block content %}
+{% load jalali_tags %}
+
+
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>View orders</h4>
+                    <div class="breadcrumb__links">
+                        <a href="#">Profile</a>
+                        <span>view orders</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="shopping-cart spad" style="direction:rtl;text-align: right;">
+    <div class="container">
+        <div class="row">
+            <div class="shopping__cart__table">
+                <table>
+                    <thead>
+                        <tr style="text-align: center;">
+                            <th style="padding-left: 10px;padding-right: 10px;padding-bottom: 0px;">ردیف</th>
+                            <th style="padding-left: 10px;padding-right: 10px;padding-bottom: 0px;">کاربر</th>
+                            <th style="padding-left: 10px;padding-right: 10px;padding-bottom: 0px;">تاریخ ثبت</th>
+                            <th style="padding-left: 10px;padding-right: 10px;padding-bottom: 0px;">اطلاعات</th>
+                            <th style="padding-left: 10px;padding-right: 10px;padding-bottom: 0px;">توضیحات</th>
+                            <th style="padding-left: 10px;padding-right: 10px;padding-bottom: 0px;">جزئیات</th>
+                            <th style="padding-left: 10px;padding-right: 10px;padding-bottom: 0px;">وضعیت</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%for item in orders%}
+                        
+                            <tr style="text-align: center;">
+                                <td class="product__cart__item__text" style="padding-left: 10px;padding-right: 10px;">
+                                    <h6>{{forloop.counter}}</h6>
+                                </td>
+                                <td class="product__cart__item__text" style="padding-left: 10px;padding-right: 10px;">
+                                    <h5>{{item.user}}</h5>
+                                </td>
+                                <td class="product__cart__item__text" style="padding-left: 10px;padding-right: 10px;">
+                                    <h6 style="font-size: small;">{{item.createDate|to_jalali:'%Y/%m/%d' }}</h6>
+                                </td>
+                                <td class="product__cart__item__text" style="padding-left: 10px;padding-right: 10px;">
+                                    <h6 style="text-align: right;">{{item.informations|linebreaksbr}}</h6>
+                                </td>
+                                <td class="product__cart__item__text" style="padding-left: 10px;padding-right: 10px;">
+                                    <h6>{{item.note}}</h6>
+                                </td>
+                                <td class="product__cart__item__text" style="padding-left: 10px;padding-right: 10px;">
+                                    <h6 style="width: max-content;font-size: 14px;;">{{item.get_status_display}}</h6>
+                                </td>
+                                <td class="product__cart__item__text" style="padding-left: 10px;padding-right: 10px;">
+                                    <h5>
+                                        <a class="orderitem" href={% url 'detailorder' item.id %}>
+                                            کلیک!
+                                        </a>
+                                    </h5>
+                                </td>
+                            </tr>
+                        
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{%endblock%}

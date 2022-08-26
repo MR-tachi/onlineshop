@@ -131,7 +131,7 @@ class VariantProduct(models.Model):
     discountPrice = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
-        return f'{self.product} -سایز {self.size}'
+        return f'{self.product} - سایز {self.size}'
 
 
 class CartItem(models.Model):
@@ -145,23 +145,29 @@ class CartItem(models.Model):
         return f'{self.shopCart}'+' cart item'
 
 
+orderChoices = ((2, 'تحویل پست داده شد'), (1, 'در حال آماده سازی'), (3, 'دریافت شده'))
+
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     createDate = models.DateField()
     informations = models.TextField(null=True)
     note = models.TextField(null=True, blank=True)
+    status = models.IntegerField(choices=orderChoices, default=1)
+    def __str__(self):
+        return f'{self.user}'+' order'
 
 
-statuschoices = (('d', 'delivered'), ('o', 'onway'), ('r', 'refunded'))
-
+orderItemChoices = ((2, 'دریافت شده'), (1, 'در حال آماده سازی'), (3, 'مرجوع شده'))
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     variantProduct = models.ForeignKey(
         VariantProduct, null=True, on_delete=models.CASCADE)
     price = models.IntegerField(null=True, blank=True)
-    status = models.CharField(choices=statuschoices,
-                              max_length=10, default='o')
+    quantity = models.IntegerField(null=True,blank=True,default=1)
+    status = models.IntegerField(choices=orderItemChoices, default=1)
+    def __str__(self):
+        return f'{self.order}'+' item '+ f'{self.id}'
 
 
 class PaymentDetails(models.Model):

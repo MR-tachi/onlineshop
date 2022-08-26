@@ -1,5 +1,6 @@
 
 from datetime import datetime
+from multiprocessing import context
 from django.shortcuts import render, get_object_or_404, redirect
 from shop.models import *
 from django.db.models import Min
@@ -149,16 +150,16 @@ def order(request):
                                 postalCode=request.POST['postalcode'], phone=request.POST['phone'])
 
             cartitems = CartItem.objects.filter(shopCart__user=request.user)
-            informations = "name :"+request.POST['fname']+" "+request.POST['lname']+"\n address" + \
-                request.POST['city']+',  '+request.POST['address'] + "\npostal code :"+request.POST['postalcode'] + \
-                "\n mobilephone :"+request.POST['mobilephone']+" , phone :" + \
-                request.POST['phone']+"\nemail :"+request.POST['email']+"\n"
+            informations = "نام: "+request.POST['fname']+" "+request.POST['lname']+"\nآدرس: " + \
+                request.POST['city']+', '+request.POST['address'] + "\nکدپستی: "+request.POST['postalcode'] + \
+                "\nتلفن‌همراه: "+request.POST['mobilephone']+" ، تلفن‌ثابت: " + \
+                request.POST['phone']+"\nایمیل: "+request.POST['email']+"\n"
             order = Order.objects.create(user=request.user, createDate=datetime.now()
                                         , informations=informations, note=request.POST['note'])
 
             for cartitem in cartitems:
                 OrderItem.objects.create(order=order, variantProduct=cartitem.variantProduct,
-                                         price=cartitem.variantProduct.discountPrice, status='o')
+                                         price=cartitem.variantProduct.discountPrice, status=1,quantity=cartitem.quantity)
                 VariantProduct.objects.filter(id=cartitem.variantProduct.id).update(quantity=F('quantity')-cartitem.quantity)
                 CartItem.objects.filter(id=cartitem.id).delete()
 
@@ -189,3 +190,31 @@ def order(request):
         context = {'cartitems': cartitems, 'totalmain': totalmain,
                    'totaldiscount': totaldiscount }
         return render(request, 'shop/order.html', context)
+
+def vieworders(request): 
+
+    if request.method == 'POST':
+        try:
+            print('\033[91m' + "print:  " + str(request.POST) + '\033[0m')
+        except:
+            pass
+    else:
+        if request.user.is_staff:
+            orders=Order.objects.all()
+        else:
+            orders=Order.objects.filter(user=request.user)
+        context={'orders':orders}
+    return render(request,'shop/vieworders.html',context)
+
+def detailorder(request,orderId): 
+
+    if request.method == 'POST':
+        try:
+            print('\033[91m' + "print:  " + str(request.POST) + '\033[0m')
+        except:
+            pass
+    else:
+        orderItems=OrderItem.objects.filter(order=orderId)
+        context={'orderItems':orderItems}
+    return render(request,'shop/detailorder.html',context)
+        

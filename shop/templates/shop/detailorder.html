@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load humanize %} 
+{%load mathfilters %}
+{% block content %}
+
+<!--start-->
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>Detail order</h4>
+                    <div class="breadcrumb__links">
+                        <a href="#">Profile</a>
+                        <span>detail order</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="shopping-cart spad" style="direction:rtl;text-align: right;">
+    <div class="container">
+        <div class="row">
+            <div class="shopping__cart__table">
+                <table>
+                    <thead>
+                        <tr style="text-align: center;">
+                            <th style="padding-left: 10px;padding-right: 10px;padding-bottom: 0px;">ردیف</th>
+                            <th style="padding-left: 10px;padding-right: 10px;padding-bottom: 0px;">محصول</th>
+                            <th style="padding-left: 10px;padding-right: 10px;padding-bottom: 0px;">نام</th>
+                            <th style="padding-left: 10px;padding-right: 10px;padding-bottom: 0px;">قیمت</th>
+                            <th style="padding-left: 10px;padding-right: 10px;padding-bottom: 0px;">تعداد</th>
+                            <th style="padding-left: 10px;padding-right: 10px;padding-bottom: 0px;">وضعیت تحویل</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%for item in orderItems%}
+                        <tr style="text-align: center;">
+                                <td class="product__cart__item__text" style="padding-left: 10px;padding-right: 10px;">
+                                    <h5>{{forloop.counter}}</h5>
+                                </td>
+                                <td calss="product__cart__item" style="padding-left: 50px;" >
+                                    <div class="product__cart__item__pic" style="  height: 90px;width: 90px;">
+                                        <img src={{item.variantProduct.product.cover.url}} alt="">
+                                    </div>
+                                </td>
+                                <td class="product__cart__item__text" style="padding-left: 10px;padding-right: 10px;">
+                                    <h6>{{item.variantProduct}}</h6>
+                                </td>
+                                <td class="product__cart__item__text" style="padding-left: 10px;padding-right: 10px;">
+                                    <h6>{{item.price}}</h6>
+                                </td>
+                                <td class="product__cart__item__text" style="padding-left: 10px;padding-right: 10px;">
+                                    <h6 >{{item.quantity}}</h6>
+                                </td>
+                                <td class="product__cart__item__text" style="padding-left: 10px;padding-right: 10px;">
+                                    <h6>{{item.get_status_display}}</h6>
+                                </td>
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{%endblock%}
