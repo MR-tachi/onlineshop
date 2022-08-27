@@ -1,6 +1,7 @@
 
 from datetime import datetime
 from multiprocessing import context
+import re
 from django.shortcuts import render, get_object_or_404, redirect
 from shop.models import *
 from django.db.models import Min
@@ -16,7 +17,10 @@ def detail(request, itemId):
     product = get_object_or_404(Product, pk=itemId)
     gallery = Gallery.objects.filter(product=itemId)
     variant = VariantProduct.objects.filter(product=itemId)
-    review = Review.objects.filter(product=itemId)
+    if request.user.is_staff:
+        review = Review.objects.filter(product=itemId)
+    else:
+        review=Review.objects.filter(product=itemId,published=True)
     context = {'product': product, 'gallery': gallery,
                'variant': variant, 'review': review}
     return render(request, 'shop/detail.html', context)
@@ -200,7 +204,7 @@ def vieworders(request):
             pass
     else:
         if request.user.is_staff:
-            orders=Order.objects.all()
+            orders=Order.objects.all().order_by('-createDate')
         else:
             orders=Order.objects.filter(user=request.user)
         context={'orders':orders}
@@ -218,3 +222,26 @@ def detailorder(request,orderId):
         context={'orderItems':orderItems}
     return render(request,'shop/detailorder.html',context)
         
+def commentmanager(request): 
+    if request.method=='POST':
+        review=Review.objects.get(id=request.POST['commentId'])
+        try:
+            if request.POST['action']=="approve":
+                Review.objects.filter(id=review.id).update(published=True)
+            elif request.POST['action']=="unapprove":
+                Review.objects.filter(id=review.id).update(published=False)
+            elif request.POST['action']=="delete":
+                Review.objects.filter(id=review.id).delete()
+        except:
+            pass
+
+    return redirect('detail',review.product.id)
+
+def addcomment(request):
+    if request.method=='POST':
+        product=Product.objects.get(id=request.POST['product'])
+        try:
+            Review.objects.create(product=product,comment=request.POST['comment'],rate=request.POST['commentrating'],createDate=datetime.now(),published=False,user=request.user)
+        except Exception as e:
+            print('\033[91m' + "print EXCEPTION :  " + str(e) + '\033[0m')
+    return redirect('detail',product.id)
