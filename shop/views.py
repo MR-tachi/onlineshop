@@ -101,7 +101,7 @@ def add_to_cart(request):
                     user=request.user, createDate=datetime.now())
 
             cartitem = CartItem.objects.filter(
-                shopCart=shopcart, variantProduct=variant).update(quantity=quantity)
+                shopCart=shopcart, variantProduct=variant).update(quantity=F('quantity')+quantity)
             if cartitem == 0:
                 cartitem = CartItem.objects.create(
                     shopCart=shopcart, variantProduct=variant, quantity=quantity, createDate=datetime.now())
