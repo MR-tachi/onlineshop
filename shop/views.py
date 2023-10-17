@@ -9,9 +9,9 @@ from django.core.paginator import Paginator
 from django.utils.encoding import uri_to_iri
 from django.db.models import F
 import requests
+Token=''
 
-# Create your views here.
-API_KEY='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzM4NCJ9.eyJ0b2tlbl9pZCI6ODcxNywicGF5bG9hZCI6bnVsbH0.30IGA2q8-tQBjIp0YETAM77cad8qoF3SgAFBKVzvk10gubOGr-r95z77tA7CStcY'
+API_KEY=Token
 
 def detail(request, itemId):
     product = get_object_or_404(Product, pk=itemId)
@@ -29,12 +29,10 @@ def detail(request, itemId):
 def home(request):
     if request.method == 'POST':
         pass
-        # Movie.objects.filter(title__contains=request.POST['search']).order_by('add_date').reverse()
     else:
         popularProducts = Product.objects.annotate(minPrice=Min('variantproduct__mainPrice')).order_by('-averageRating')[0:4]
         newProducts = Product.objects.annotate(minPrice=Min('variantproduct__mainPrice')).order_by('-createDate')[0:4]
         mostVisitedProducts = Product.objects.annotate(minPrice=Min('variantproduct__mainPrice')).order_by('-ratingCount')[0:4]
-        # fix to mostVisitedProducts = Product.objects.annotate(minPrice=Min('variantproduct__mainPrice')).order_by('view')[0:4]
         
 
         context = {'newProducts': newProducts,'mostVisitedProducts': mostVisitedProducts,'popularProducts': popularProducts,}
@@ -79,13 +77,10 @@ def shop(request, filterby="date", filterfield="CreateDate", showcount=12):
 def edit_cart(request):
 
     if request.method == 'POST':
-        #print('\033[91m' +"print:  "+ str(request.POST) + '\033[0m')
         try:
             quantity = request.POST['newvalue']
             CartItem.objects.filter(
                 id=request.POST['cartid']).update(quantity=quantity)
-            print('\033[91m' + "print:  " + str(request.POST) + '\033[0m')
-
         except:
             pass
     return redirect('shoppingcart')
@@ -94,7 +89,6 @@ def edit_cart(request):
 def add_to_cart(request):
     if request.method == 'POST':
         if str(request.user) == 'AnonymousUser':
-            print('\033[91m' + "print:  " + str(str(request.user)) + '\033[0m')
         else:
             quantity = request.POST['quantityvalue']
             variant = VariantProduct.objects.get(id=request.POST['radioid'])
@@ -109,7 +103,10 @@ def add_to_cart(request):
             if cartitem == 0:
                 cartitem = CartItem.objects.create(
                     shopCart=shopcart, variantProduct=variant, quantity=quantity, createDate=datetime.now())
+
+            #print for debugging
             #print('\033[91m' +"print:  "+ str(cartitem) + '\033[0m')
+            
             return redirect('shoppingcart')
     else:
         return redirect('detail')
@@ -117,6 +114,7 @@ def add_to_cart(request):
 
 def remove_from_cart(request):
     if request.method == 'POST':
+        #uncomment only when website is up
         # variant=VariantProduct.objects.get(id=request.POST['remove'])
         # user=request.user
         CartItem.objects.filter(id=request.POST['remove']).delete()
@@ -135,12 +133,10 @@ def shoppingcart(request):
         totaldiscount = totaldiscount + \
             (item.variantProduct.discountPrice*item.quantity)
 
-    #print('\033[91m' +"print:  main:"+ str(totalmain)+" dis: "+ str(totaldiscount) + '\033[0m')
 
     context = {'cartitems': cartitems, 'totalmain': totalmain,
                'totaldiscount': totaldiscount}
     return render(request, 'shop/shoppingcart.html', context)
-    #print('\033[91m' +"print:  "+ str(request.user.shopcart) + '\033[0m')
 
 
 def order(request):
@@ -167,6 +163,7 @@ def order(request):
                 VariantProduct.objects.filter(id=cartitem.variantProduct.id).update(quantity=F('quantity')-cartitem.quantity)
                 CartItem.objects.filter(id=cartitem.id).delete()
 
+                #uncomment only when site is up
                 ''' API for decrease quantity on digikala
 
                 url = f"https://seller.digikala.com/api/v1/variants/{cartitem.variantProduct.dkpc}/"
@@ -199,7 +196,6 @@ def vieworders(request):
 
     if request.method == 'POST':
         try:
-            print('\033[91m' + "print:  " + str(request.POST) + '\033[0m')
         except:
             pass
     else:
