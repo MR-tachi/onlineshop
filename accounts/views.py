@@ -1,4 +1,3 @@
-import imp
 from importlib.resources import contents
 from pickle import NONE
 from urllib import request

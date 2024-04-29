@@ -8,7 +8,6 @@ from django.db.models import Min
 from django.core.paginator import Paginator
 from django.utils.encoding import uri_to_iri
 from django.db.models import F
-import requests
 Token=''
 
 API_KEY=Token
@@ -89,6 +88,7 @@ def edit_cart(request):
 def add_to_cart(request):
     if request.method == 'POST':
         if str(request.user) == 'AnonymousUser':
+            None
         else:
             quantity = request.POST['quantityvalue']
             variant = VariantProduct.objects.get(id=request.POST['radioid'])
@@ -196,6 +196,7 @@ def vieworders(request):
 
     if request.method == 'POST':
         try:
+            None
         except:
             pass
     else:
