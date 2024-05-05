@@ -1,4 +1,4 @@
-from .models import Profile
+from ..shop.models import Profile
 from rest_framework_json_api import serializers
 
 
