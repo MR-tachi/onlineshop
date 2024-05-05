@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'django.utils.encoding',
     'accounts.apps.AccountsConfig',
     'shop.apps.ShopConfig',
+    'api.apps.ApiConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -33,8 +34,6 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'mathfilters',
     'jalali_date',
-
-
 
 ]
 
