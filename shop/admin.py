@@ -7,7 +7,6 @@ from shop.models import *
 class ProductAdmin(admin.ModelAdmin):
     autocomplete_fields = ['category']
     search_fields = ['name']
-    #list_filter = ['genre', 'country']
     list_display = ['photo', 'name']
 
 
