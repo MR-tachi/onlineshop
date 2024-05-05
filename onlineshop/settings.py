@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'mathfilters',
     'jalali_date',
+    'rest_framework',
 
 ]
 

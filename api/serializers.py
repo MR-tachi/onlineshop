@@ -1,4 +1,4 @@
-from shop.models import Profile
+from shop.models import Profile, Product
 from rest_framework_json_api import serializers
 
 
@@ -11,6 +11,17 @@ class ProfileSerializer(serializers.ModelSerializer):
             'phone',
             'city',
             'nationaID',
+        )
+
+
+class ProductSerializer(serializers.ModelSerializer):  
+    class Meta:
+        model = Product
+        fields = (
+            'name',
+            'dkp',
+            'ratingCount',
+            'cover',
         )
 
  
