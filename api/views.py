@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
-from shop.models import Profile
+from shop.models import Profile , User
 from api.serializers import ProfileSerializer
 
 
@@ -14,6 +14,7 @@ def snippet_list(request):
     """
     if request.method == 'GET':
         Profiles = Profile.objects.all()
+        Users = User.objects.all()
         serializer = ProfileSerializer(Profiles, many=True)
         return JsonResponse(serializer.data, safe=False)
 
