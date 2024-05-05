@@ -3,8 +3,10 @@ from django.http import HttpResponse, JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
-from shop.models import Profile , Product
+from shop.models import Profile, Product, Order
 import api.serializers as f
+from rest_framework import generics
+from rest_framework import mixins
 
 
 @api_view(['GET', 'POST'])
@@ -67,3 +69,16 @@ def product_detail(request, pk):
     elif request.method == '':
         product.delete()
         return HttpResponse(status=status.HTTP_204_NO_CONTENT)
+    
+
+class OrderList(mixins.ListModelMixin,
+                  mixins.CreateModelMixin,
+                  generics.GenericAPIView):
+    queryset = Order.objects.all()
+    serializer_class = f.OrderSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)

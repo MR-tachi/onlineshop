@@ -1,4 +1,4 @@
-from shop.models import Profile, Product
+from shop.models import Profile, Product, Order
 from rest_framework_json_api import serializers
 
 
@@ -24,4 +24,15 @@ class ProductSerializer(serializers.ModelSerializer):
             'cover',
         )
 
- 
+class OrderSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source="user.username")    
+    
+    class Meta:
+        model = Order
+        fields = (
+            'pk',
+            'username',
+            'createDate',
+            'informations',
+            'status',
+        )
