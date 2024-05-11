@@ -1,50 +1,30 @@
-from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
 from shop.models import Profile, Product, Order
-from .serializers import ProductSerializer, ProfileSerializer, OrderSerializer, OrderDetailSerializer
-from rest_framework import generics, mixins, viewsets, filters, status
+from .serializers import ProductSerializer, ProfileSerializer, OrderSerializer, OrderDetailSerializer, ShopCartSerializer, ReviewSerializer
+from rest_framework import viewsets, filters, generics
+from rest_framework.response import Response
+from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.views import ObtainAuthToken
 from django_filters.rest_framework import DjangoFilterBackend
-from shop.models import Product, Category
+from shop.models import Product, Category, ShopCart, Review
 from .serializers import ProductSerializer, CategorySerializer
-
-
-@api_view(['GET', 'POST'])
-def profile_list(request):
+class ProfileViewSet(viewsets.ModelViewSet):
     """
-    List all profiles, or create a new profile.
+    A viewset that provides the standard actions for CRUD operations on profiles.
     """
-    if request.method == 'GET':
-        Profiles = Profile.objects.all()
-        serializer = ProfileSerializer(Profiles, many=True)
-        return Response(serializer.data)
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
 
-    elif request.method == 'POST':
-        serializer = ProfileSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-
-class OrderList(mixins.ListModelMixin,
-                  mixins.CreateModelMixin,
-                  generics.GenericAPIView):
+class OrderViewSet(viewsets.ModelViewSet):
+    """
+    A viewset that provides the standard actions for CRUD operations on orders.
+    """
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
-
-class OrderDetailAPIView(generics.RetrieveAPIView):
-    queryset = Order.objects.all().prefetch_related('orderitem_set')
-    serializer_class = OrderDetailSerializer
-
 class ProductViewSet(viewsets.ModelViewSet):
+    """
+    A viewset for handling CRUD operations on products, with additional support for filtering, searching, and ordering.
+    """
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
@@ -53,5 +33,52 @@ class ProductViewSet(viewsets.ModelViewSet):
     ordering_fields = ['name', 'createDate']
 
 class CategoryViewSet(viewsets.ModelViewSet):
+    """
+    A viewset for performing CRUD operations on categories.
+    """
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    
+class OrderViewSet(viewsets.ModelViewSet):
+    """
+    A viewset for handling orders with a detailed view for individual orders.
+    """
+    queryset = Order.objects.prefetch_related('orderitem_set').all()
+    serializer_class = OrderSerializer
+
+    def get_serializer_class(self):
+        """
+        Returns a detailed serializer for the 'retrieve' action and a standard serializer otherwise.
+        """
+        if self.action == 'retrieve':
+            return OrderDetailSerializer
+        return OrderSerializer
+    
+class ShopCartViewSet(viewsets.GenericViewSet, generics.RetrieveUpdateAPIView):
+    """
+    A viewset for retrieving and updating shopping cart instances.
+    """
+    queryset = ShopCart.objects.all()
+    serializer_class = ShopCartSerializer
+
+class ReviewViewSet(viewsets.ModelViewSet):
+    """
+    A viewset for managing CRUD operations on reviews.
+    """
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+
+class CustomAuthToken(ObtainAuthToken):
+    """
+    A custom authentication token class that handles creating or retrieving a user's auth token.
+    """
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+                                           context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'token': token.key,
+            'email': user.email
+        })

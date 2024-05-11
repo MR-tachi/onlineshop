@@ -3,16 +3,15 @@ from rest_framework.routers import DefaultRouter
 from api import views
 
 router = DefaultRouter()
-router.register(r'products', views.ProductViewSet)
-router.register(r'categories', views.CategoryViewSet)
+router.register(r'profiles', views.ProfileViewSet, basename='profile')
+router.register(r'shopcarts', views.ShopCartViewSet, basename='shopcart')
+router.register(r'products', views.ProductViewSet, basename='product')
+router.register(r'reviews', views.ReviewViewSet, basename='review')
+router.register(r'orders', views.OrderViewSet, basename='order')
+router.register(r'categories', views.CategoryViewSet, basename='category')
 
 
 urlpatterns = [
     path('', include(router.urls)),
-]
-
-urlpatterns += [
-    path('profiles/', views.profile_list, name='profile-list'),
-    path('orders/', views.OrderList.as_view(), name='order-list'),
-    path('orders/<int:pk>/', views.OrderDetailAPIView.as_view(), name='order-detail'),
+    path('api-token-auth/', views.CustomAuthToken.as_view()),
 ]
